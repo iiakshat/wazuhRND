@@ -18,9 +18,22 @@ def pyFiles():
 
     python_files.remove(os.path.relpath(__file__))
     return python_files
+
 def get_relative_import_path(file_path):
     depth = file_path.count(os.sep)
-    return 'from ' + ('.' * depth) + 'debug import config'
+    return 'from ' + ('.' * depth) + ' import debug'
+
+def snippet(file_path):
+    code_snippet = f'''
+    import os
+    root_directory = os.path.abspath(os.sep)
+    os.chdir(root_directory)
+    import time
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s [%(levelname)s] %(message)s %(funcName)20s() - %(filename)s', 
+                        datefmt='%d-%m-%Y %H:%M:%S', filename=f"var/osssec/logs/{time.strftime('%Y-%m-%d')}.log")
+
+'''
     
 def helper(file_path):
     with open(file_path, 'r') as file:
